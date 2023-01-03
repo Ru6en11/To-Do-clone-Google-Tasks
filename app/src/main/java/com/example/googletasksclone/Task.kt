@@ -1,7 +1,11 @@
 package com.example.googletasksclone
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Task(
-    val isCompleted: Boolean,
-    val text: String,
-    val isFavourite: Boolean
-)
+    var isCompleted: Boolean,
+    var text: String,
+    var isFavourite: Boolean
+) : Parcelable

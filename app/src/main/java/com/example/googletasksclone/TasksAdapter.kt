@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.googletasksclone.databinding.TaskItemBinding
 
-class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
+class TasksAdapter(private val listener: TasksListener) : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
 
     var tasks: List<Task> = mutableListOf()
             set(newValue) {
@@ -16,16 +16,31 @@ class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
                 }
             }
 
-    class TasksViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class TasksViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val binding = TaskItemBinding.bind(view)
 
-        fun bind(task: Task) {
-            binding.isCompletedCheckBox.isChecked = task.isCompleted
-            binding.isCompletedCheckBox.text = task.text
+        fun bind(task: Task) = binding.run {
+
+            isCompletedCheckBox.isChecked = task.isCompleted
+            isCompletedCheckBox.text = task.text
+
+            isCompletedCheckBox.setOnClickListener {
+                task.isCompleted = isCompletedCheckBox.isChecked
+                listener.updateTask(task)
+                notifyDataSetChanged()
+            }
 
             val imageRes = if (task.isFavourite) R.drawable.ic_star else R.drawable.ic_star_border
-            binding.isFavouriteImageButton.setImageResource(imageRes)
+            isFavouriteImageButton.setImageResource(imageRes)
+
+            isFavouriteImageButton.setOnClickListener {
+                task.isFavourite = !task.isFavourite
+                listener.updateTask(task)
+                val imRes = if (task.isFavourite) R.drawable.ic_star else R.drawable.ic_star_border
+                isFavouriteImageButton.setImageResource(imRes)
+                notifyDataSetChanged()
+            }
 
         }
 
