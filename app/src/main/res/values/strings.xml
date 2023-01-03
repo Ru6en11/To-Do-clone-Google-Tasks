@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GoogleTasksClone</string>
+    <string name="favourite_button">Favourite button</string>
 </resources>
