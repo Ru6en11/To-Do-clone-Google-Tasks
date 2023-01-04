@@ -6,27 +6,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.googletasksclone.Task
 import com.example.googletasksclone.TasksAdapter
+import com.example.googletasksclone.TasksListener
 import com.example.googletasksclone.databinding.FragmentTasksBinding
 
 class TasksFragment : Fragment() {
 
     private lateinit var binding: FragmentTasksBinding
+    private val viewModel: TasksViewModel by viewModels()
 
-    private var adapter = TasksAdapter()
+    private var adapter = TasksAdapter(viewModel as TasksListener)
     //general list
-    private var tasks = mutableListOf<Task>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
-            fetchData()
+            viewModel.initState()
         } else {
-            tasks = savedInstanceState.getParcelableArrayList<Task>("KEY") as MutableList<Task>
-            adapter.tasks = tasks
+            val state = savedInstanceState.getParcelableArrayList<Task>("KEY") as MutableList<Task>
+            viewModel.initState(state)
         }
     }
 
@@ -47,27 +51,24 @@ class TasksFragment : Fragment() {
 
         initRecyclerView()
 
+        viewModel.tasks.observe(viewLifecycleOwner) {
+            adapter.tasks = it
+        }
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList("KEY", tasks as ArrayList<Task>)
+        outState.putParcelableArrayList(
+            "KEY",
+            viewModel.tasks.value as ArrayList<Task>
+        )
     }
 
     private fun initRecyclerView() {
         val layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
-    }
-
-    private fun fetchData() {
-        tasks.add(Task(true, "Task 0", true))
-        for (i in 1..10) {
-            tasks.add(
-                Task(false, "Task $i", false)
-            )
-        }
-        adapter.tasks = tasks
     }
 
 }
