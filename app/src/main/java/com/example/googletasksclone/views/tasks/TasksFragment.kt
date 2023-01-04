@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.googletasksclone.Task
 import com.example.googletasksclone.TasksAdapter
@@ -16,10 +16,8 @@ import com.example.googletasksclone.databinding.FragmentTasksBinding
 class TasksFragment : Fragment() {
 
     private lateinit var binding: FragmentTasksBinding
-    private val viewModel: TasksViewModel by viewModels()
-
-    private var adapter = TasksAdapter(viewModel as TasksListener)
-    //general list
+    private val viewModel: TasksViewModel by activityViewModels()
+    private lateinit var adapter: TasksAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +44,8 @@ class TasksFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        adapter = TasksAdapter(viewModel as TasksListener)
 
         initRecyclerView()
 
