@@ -1,4 +1,4 @@
-package com.example.googletasksclone
+package com.example.googletasksclone.model.task
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

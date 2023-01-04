@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.googletasksclone.Task
-import com.example.googletasksclone.TasksAdapter
-import com.example.googletasksclone.TasksListener
+import com.example.googletasksclone.model.task.Task
 import com.example.googletasksclone.databinding.FragmentTasksBinding
 
 class TasksFragment : Fragment() {
@@ -25,6 +23,7 @@ class TasksFragment : Fragment() {
         if (savedInstanceState == null) {
             viewModel.initState()
         } else {
+            @Suppress("DEPRECATION")
             val state = savedInstanceState.getParcelableArrayList<Task>(KEY_STATE) as MutableList<Task>
             viewModel.initState(state)
         }

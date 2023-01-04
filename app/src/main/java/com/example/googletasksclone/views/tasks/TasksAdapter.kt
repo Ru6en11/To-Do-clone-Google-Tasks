@@ -1,9 +1,11 @@
-package com.example.googletasksclone
+package com.example.googletasksclone.views.tasks
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.googletasksclone.R
+import com.example.googletasksclone.model.task.Task
 import com.example.googletasksclone.databinding.TaskItemBinding
 
 class TasksAdapter(private val listener: TasksListener) : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {

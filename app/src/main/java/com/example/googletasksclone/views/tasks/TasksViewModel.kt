@@ -3,8 +3,7 @@ package com.example.googletasksclone.views.tasks
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.googletasksclone.Task
-import com.example.googletasksclone.TasksListener
+import com.example.googletasksclone.model.task.Task
 
 class TasksViewModel : ViewModel(), TasksListener {
 
