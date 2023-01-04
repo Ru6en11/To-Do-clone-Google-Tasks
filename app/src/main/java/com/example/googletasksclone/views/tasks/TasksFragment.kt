@@ -25,7 +25,7 @@ class TasksFragment : Fragment() {
         if (savedInstanceState == null) {
             viewModel.initState()
         } else {
-            val state = savedInstanceState.getParcelableArrayList<Task>("KEY") as MutableList<Task>
+            val state = savedInstanceState.getParcelableArrayList<Task>(KEY_STATE) as MutableList<Task>
             viewModel.initState(state)
         }
     }
@@ -58,7 +58,7 @@ class TasksFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelableArrayList(
-            "KEY",
+            KEY_STATE,
             viewModel.tasks.value as ArrayList<Task>
         )
     }
@@ -67,6 +67,14 @@ class TasksFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
+    }
+
+    companion object {
+
+        private const val KEY_STATE = "com.example.googletasksclone.views.tasks.key_state"
+
+        fun newInstance(): TasksFragment = TasksFragment()
+
     }
 
 }
