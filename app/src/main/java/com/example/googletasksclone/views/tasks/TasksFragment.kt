@@ -2,6 +2,7 @@ package com.example.googletasksclone.views.tasks
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,7 +56,6 @@ class TasksFragment : Fragment() {
         viewModel.tasks.observe(viewLifecycleOwner) {
             adapter.tasks = it
         }
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
