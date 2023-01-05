@@ -2,6 +2,7 @@ package com.example.googletasksclone.views.tasks
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,6 +48,10 @@ class TasksFragment : Fragment() {
         adapter = TasksAdapter(viewModel as TasksListener)
 
         initRecyclerView()
+
+        binding.createItemFab.setOnClickListener {
+            viewModel.createTask()
+        }
 
         viewModel.tasks.observe(viewLifecycleOwner) {
             adapter.tasks = it

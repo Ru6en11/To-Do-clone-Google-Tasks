@@ -24,6 +24,17 @@ class TasksViewModel : ViewModel(), TasksListener {
         _tasks.value = list
     }
 
+    fun createTask() {
+        val list = _tasks.value ?: mutableListOf()
+        list.add(
+            Task(
+                isCompleted = false,
+                text = "Task ${list.size}",
+                isFavourite = false)
+        )
+        _tasks.value = list
+    }
+
     fun initState(state: MutableList<Task>? = null) {
         if (state != null) {
             _tasks.value = state!!

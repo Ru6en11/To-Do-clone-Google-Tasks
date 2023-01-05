@@ -12,10 +12,8 @@ class TasksAdapter(private val listener: TasksListener) : RecyclerView.Adapter<T
 
     var tasks: List<Task> = mutableListOf()
             set(newValue) {
-                if (newValue != field) {
-                    field = newValue
-                    notifyDataSetChanged()
-                }
+                field = newValue
+                notifyDataSetChanged()
             }
 
     inner class TasksViewHolder(view: View) : RecyclerView.ViewHolder(view) {
