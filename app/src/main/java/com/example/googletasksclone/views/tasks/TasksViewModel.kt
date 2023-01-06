@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.googletasksclone.model.task.InDatabaseTaskRepository
 import com.example.googletasksclone.model.task.Task
-import com.example.googletasksclone.model.task.Observer
+import com.example.googletasksclone.model.task.Subscriber
 
-class TasksViewModel : ViewModel(), TasksListener, Observer {
+class TasksViewModel : ViewModel(), TasksListener, Subscriber {
 
     private val taskRepository = InDatabaseTaskRepository.get()
 
