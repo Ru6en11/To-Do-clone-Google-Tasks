@@ -1,6 +1,6 @@
 package com.example.googletasksclone.model.task
 
-interface TaskSubscriber {
+interface Observer {
 
     fun setChanges(tasks: List<Task>)
 

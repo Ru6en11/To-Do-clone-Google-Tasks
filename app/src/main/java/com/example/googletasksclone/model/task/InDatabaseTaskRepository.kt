@@ -4,7 +4,7 @@ class InDatabaseTaskRepository : TaskRepository {
 
     private var tasks: MutableList<Task> =  mutableListOf()
 
-    private val subscribers = mutableListOf<TaskSubscriber>()
+    private val subscribers = mutableListOf<Observer>()
 
     override fun getTasks(): List<Task> = tasks as List<Task>
 
@@ -26,11 +26,11 @@ class InDatabaseTaskRepository : TaskRepository {
         notifyDataSetChanges()
     }
 
-    fun addSubscriber(subscriber: TaskSubscriber) {
+    fun addSubscriber(subscriber: Observer) {
         subscribers.add(subscriber)
     }
 
-    fun removeSubscriber(subscriber: TaskSubscriber) {
+    fun removeSubscriber(subscriber: Observer) {
         subscribers.remove(subscriber)
     }
 
