@@ -88,7 +88,7 @@ class TasksFragment : Fragment() {
         }
         dialogBinding.taskTitleEditText.requestFocus()
 
-        newTaskDialog.setOnCancelListener {
+        newTaskDialog.setOnDismissListener {
             dialogBinding.taskTitleEditText.text.clear()
         }
 
