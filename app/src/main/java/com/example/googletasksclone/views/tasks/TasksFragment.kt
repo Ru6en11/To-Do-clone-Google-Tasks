@@ -91,6 +91,11 @@ class TasksFragment : Fragment() {
         dialogBinding.additionalInfoImageBtn.setOnClickListener {
             dialogBinding.additionalInfoEditText.visibility = View.VISIBLE
         }
+        dialogBinding.addInFavouriteCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            dialogBinding.addInFavouriteCheckBox.setButtonDrawable(
+                    if (isChecked) R.drawable.ic_star else R.drawable.ic_star_border
+                )
+        }
 
         dialogBinding.taskTitleEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -106,7 +111,7 @@ class TasksFragment : Fragment() {
                 isCompleted = false,
                 text = dialogBinding.taskTitleEditText.text.toString(),
                 additionalInfo = dialogBinding.additionalInfoEditText.text.toString(),
-                isFavourite = false //todo
+                isFavourite = dialogBinding.addInFavouriteCheckBox.isChecked
             )
             viewModel.createTask(task)
             newTaskDialog.dismiss()
@@ -114,9 +119,12 @@ class TasksFragment : Fragment() {
         dialogBinding.taskTitleEditText.requestFocus()
 
         newTaskDialog.setOnDismissListener {
-            dialogBinding.taskTitleEditText.text.clear()
-            dialogBinding.additionalInfoEditText.text.clear()
-            dialogBinding.additionalInfoEditText.visibility = View.GONE
+            dialogBinding.apply {
+                taskTitleEditText.text.clear()
+                additionalInfoEditText.text.clear()
+                additionalInfoEditText.visibility = View.GONE
+                addInFavouriteCheckBox.isChecked = false
+            }
         }
 
         newTaskDialog.setContentView(dialogBinding.root)
