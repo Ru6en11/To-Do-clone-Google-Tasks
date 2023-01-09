@@ -88,6 +88,10 @@ class TasksFragment : Fragment() {
 
         dialogBinding.saveTaskButton.isEnabled = false
 
+        dialogBinding.additionalInfoImageBtn.setOnClickListener {
+            dialogBinding.additionalInfoEditText.visibility = View.VISIBLE
+        }
+
         dialogBinding.taskTitleEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -101,7 +105,7 @@ class TasksFragment : Fragment() {
             val task = Task(
                 isCompleted = false,
                 text = dialogBinding.taskTitleEditText.text.toString(),
-                additionalInfo = "",
+                additionalInfo = dialogBinding.additionalInfoEditText.text.toString(),
                 isFavourite = false //todo
             )
             viewModel.createTask(task)
@@ -111,6 +115,8 @@ class TasksFragment : Fragment() {
 
         newTaskDialog.setOnDismissListener {
             dialogBinding.taskTitleEditText.text.clear()
+            dialogBinding.additionalInfoEditText.text.clear()
+            dialogBinding.additionalInfoEditText.visibility = View.GONE
         }
 
         newTaskDialog.setContentView(dialogBinding.root)
