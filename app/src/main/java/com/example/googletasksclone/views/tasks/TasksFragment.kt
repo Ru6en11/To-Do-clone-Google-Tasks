@@ -101,6 +101,7 @@ class TasksFragment : Fragment() {
             val task = Task(
                 isCompleted = false,
                 text = dialogBinding.taskTitleEditText.text.toString(),
+                additionalInfo = "",
                 isFavourite = false //todo
             )
             viewModel.createTask(task)
