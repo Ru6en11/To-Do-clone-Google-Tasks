@@ -1,5 +1,6 @@
 package com.example.googletasksclone.views.current
 
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,7 +22,6 @@ class CurrentTaskViewModel : ViewModel() {
 
     fun deleteTask() {
         taskRepository.removeTask(_task.value!!)
-        //todo
     }
 
     fun initState(task: Task) {
