@@ -24,4 +24,8 @@ class CurrentTaskViewModel : ViewModel() {
         //todo
     }
 
+    fun initState(task: Task) {
+        _task.value = task
+    }
+
 }

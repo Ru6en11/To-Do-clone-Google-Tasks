@@ -1,6 +1,7 @@
 package com.example.googletasksclone.views.tasks
 
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,17 +14,30 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.googletasksclone.R
+import com.example.googletasksclone.base.navigator.Navigator
 import com.example.googletasksclone.databinding.CreateTaskBottomSheetBinding
 import com.example.googletasksclone.model.task.Task
 import com.example.googletasksclone.databinding.FragmentTasksBinding
+import com.example.googletasksclone.views.current.CurrentTaskFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class TasksFragment : Fragment(), TasksListener {
 
     private lateinit var binding: FragmentTasksBinding
     private val viewModel: TasksViewModel by activityViewModels()
+    private var navigator: Navigator? = null
     private val adapter: TasksAdapter = TasksAdapter(this)
     private lateinit var newTaskDialog: BottomSheetDialog
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        navigator = context as Navigator
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        navigator = null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,7 +150,7 @@ class TasksFragment : Fragment(), TasksListener {
     }
 
     override fun showTaskScreen(task: Task) {
-
+        navigator?.launch(CurrentTaskFragment.newInstance(task))
     }
 
     companion object {
