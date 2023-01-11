@@ -23,7 +23,15 @@ class TasksAdapter(private val listener: TasksListener) : RecyclerView.Adapter<T
         fun bind(task: Task) = binding.run {
 
             isCompletedCheckBox.isChecked = task.isCompleted
-            isCompletedCheckBox.text = task.text
+            taskTitleTextView.text = task.text
+            taskAdditInfoTextView.apply {
+                if (task.additionalInfo.isNotBlank()) {
+                    text = task.additionalInfo
+                    visibility = View.VISIBLE
+                } else {
+                    visibility = View.GONE
+                }
+            }
 
             isCompletedCheckBox.setOnClickListener {
                 task.isCompleted = isCompletedCheckBox.isChecked
