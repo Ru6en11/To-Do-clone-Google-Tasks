@@ -136,7 +136,7 @@ class TasksFragment : Fragment(), TasksListener {
     }
 
     override fun showTaskScreen(task: Task) {
-        Toast.makeText(requireContext(), task.text, Toast.LENGTH_SHORT).show()
+
     }
 
     companion object {
