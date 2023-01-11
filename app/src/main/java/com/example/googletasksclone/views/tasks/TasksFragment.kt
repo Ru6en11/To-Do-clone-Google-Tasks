@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,11 +18,11 @@ import com.example.googletasksclone.model.task.Task
 import com.example.googletasksclone.databinding.FragmentTasksBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class TasksFragment : Fragment() {
+class TasksFragment : Fragment(), TasksListener {
 
     private lateinit var binding: FragmentTasksBinding
     private val viewModel: TasksViewModel by activityViewModels()
-    private lateinit var adapter: TasksAdapter
+    private val adapter: TasksAdapter = TasksAdapter(this)
     private lateinit var newTaskDialog: BottomSheetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +52,6 @@ class TasksFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = TasksAdapter(viewModel as TasksListener)
         newTaskDialog = BottomSheetDialog(requireContext(), R.style.DialogStyle)
         newTaskDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
 
@@ -129,6 +129,14 @@ class TasksFragment : Fragment() {
 
         newTaskDialog.setContentView(dialogBinding.root)
 
+    }
+
+    override fun onClickTask(task: Task) {
+        viewModel.updateTask(task)
+    }
+
+    override fun showTaskScreen(task: Task) {
+        Toast.makeText(requireContext(), task.text, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

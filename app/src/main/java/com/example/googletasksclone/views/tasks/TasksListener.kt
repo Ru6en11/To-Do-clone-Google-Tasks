@@ -4,8 +4,11 @@ import com.example.googletasksclone.model.task.Task
 
 interface TasksListener {
 
-    fun updateTask(task: Task)
 
-    fun removeTask(task: Task)
+
+    fun onClickTask(task: Task)
+
+    fun showTaskScreen(task:Task)
+
 
 }

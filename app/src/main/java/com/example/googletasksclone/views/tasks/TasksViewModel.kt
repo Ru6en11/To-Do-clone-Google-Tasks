@@ -7,7 +7,7 @@ import com.example.googletasksclone.model.task.InDatabaseTaskRepository
 import com.example.googletasksclone.model.task.Task
 import com.example.googletasksclone.model.task.Subscriber
 
-class TasksViewModel : ViewModel(), TasksListener, Subscriber {
+class TasksViewModel : ViewModel(), Subscriber {
 
     private val taskRepository = InDatabaseTaskRepository.get()
 
@@ -23,11 +23,11 @@ class TasksViewModel : ViewModel(), TasksListener, Subscriber {
         taskRepository.removeSubscriber(this)
     }
 
-    override fun updateTask(task: Task) {
+    fun updateTask(task: Task) {
         taskRepository.updateTask(task)
     }
 
-    override fun removeTask(task: Task) {
+    fun removeTask(task: Task) {
         taskRepository.removeTask(task)
     }
 
