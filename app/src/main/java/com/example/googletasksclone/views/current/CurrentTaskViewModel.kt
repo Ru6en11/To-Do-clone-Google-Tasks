@@ -15,9 +15,21 @@ class CurrentTaskViewModel : ViewModel() {
     private val _task = MutableLiveData<Task>()
     val task: LiveData<Task> = _task
 
-    fun updateTask(task: Task) {
-        taskRepository.updateTask(task)
-        _task.value = task
+    fun updateTask(
+        isCompleted: Boolean? = null,
+        text: String? = null,
+        additionalInfo: String? = null,
+        isFavourite: Boolean? = null) {
+
+        val task = this._task.value!!
+        val newTask = task.copy(
+            isCompleted = isCompleted ?: task.isCompleted,
+            text = text ?: task.text,
+            additionalInfo = additionalInfo ?: task.additionalInfo,
+            isFavourite = isFavourite ?: task.isFavourite
+        )
+            taskRepository.updateTask(newTask)
+            _task.value = newTask
     }
 
     fun deleteTask() {

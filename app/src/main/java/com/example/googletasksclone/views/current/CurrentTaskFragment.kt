@@ -55,17 +55,15 @@ class CurrentTaskFragment : Fragment() {
 
         binding.favouriteImageButton.setOnClickListener {
             viewModel.updateTask(
-                task = viewModel.task.value!!.copy(
-                    isFavourite = !viewModel.task.value!!.isFavourite
-                )
+                isFavourite = !viewModel.task.value!!.isFavourite,
+                text = binding.taskTitleEditText.text.toString(),
+                additionalInfo = binding.additInfoEditText.text.toString()
             )
         }
 
         binding.addInCompletedButton.setOnClickListener {
             viewModel.updateTask(
-                task = viewModel.task.value!!.copy(
-                    isCompleted = !viewModel.task.value!!.isCompleted
-                )
+                isCompleted = !viewModel.task.value!!.isCompleted
             )
             if (viewModel.task.value?.isCompleted!!) navigator?.goBack()
         }
@@ -81,10 +79,8 @@ class CurrentTaskFragment : Fragment() {
         super.onStop()
 
         viewModel.updateTask(
-            task = viewModel.task.value!!.copy(
-                text = binding.taskTitleEditText.text.toString(),
-                additionalInfo = binding.additInfoEditText.text.toString()
-            )
+            text = binding.taskTitleEditText.text.toString(),
+            additionalInfo = binding.additInfoEditText.text.toString()
         )
     }
 
