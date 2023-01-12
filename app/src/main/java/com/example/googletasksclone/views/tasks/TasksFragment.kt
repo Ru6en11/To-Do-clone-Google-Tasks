@@ -23,6 +23,7 @@ import com.example.googletasksclone.model.task.Task
 import com.example.googletasksclone.databinding.FragmentTasksBinding
 import com.example.googletasksclone.views.current.CurrentTaskFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.snackbar.Snackbar
 
 class TasksFragment : Fragment(), TasksListener  {
 
@@ -72,7 +73,11 @@ class TasksFragment : Fragment(), TasksListener  {
         setFragmentResultListener(EVENT_DELETE_TASK) { key, bundle ->
             @Suppress("DEPRECATION")
             val task = bundle.getParcelable<Task>(KEY_REMOVED_TASK) as Task
-            Toast.makeText(requireContext(), "${task.text} deleted", Toast.LENGTH_SHORT).show()
+            val snackbar = Snackbar.make( view, "Задача удалена", Snackbar.LENGTH_LONG)
+            snackbar.setAction("Отмена") {
+                Toast.makeText(requireContext(), "Отменено", Toast.LENGTH_SHORT).show()
+            }
+            snackbar.show()
         }
 
 
