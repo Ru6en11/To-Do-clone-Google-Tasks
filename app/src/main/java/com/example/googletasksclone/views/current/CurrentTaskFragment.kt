@@ -2,6 +2,7 @@ package com.example.googletasksclone.views.current
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,6 +75,17 @@ class CurrentTaskFragment : Fragment() {
             navigator?.goBack()
         }
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        viewModel.updateTask(
+            task = viewModel.task.value!!.copy(
+                text = binding.taskTitleEditText.text.toString(),
+                additionalInfo = binding.additInfoEditText.text.toString()
+            )
+        )
     }
 
     private fun renderState(task: Task) = binding.run {
