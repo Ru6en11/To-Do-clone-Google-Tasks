@@ -1,5 +1,6 @@
 package com.example.googletasksclone.views.tasks
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.googletasksclone.R
 import com.example.googletasksclone.model.task.Task
 import com.example.googletasksclone.databinding.TaskItemBinding
+import java.util.*
 
 class TasksAdapter(private val listener: TasksListener) : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
 
@@ -70,5 +72,10 @@ class TasksAdapter(private val listener: TasksListener) : RecyclerView.Adapter<T
     }
 
     override fun getItemCount(): Int = tasks.size
+
+    fun moveItem(from: Int, to: Int) {
+        Collections.swap(tasks, from, to)
+        listener.onMoveTask(from, to)
+    }
 
 }

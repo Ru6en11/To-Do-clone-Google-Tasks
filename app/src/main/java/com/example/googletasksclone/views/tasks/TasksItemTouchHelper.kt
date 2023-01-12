@@ -18,6 +18,7 @@ val itemTouchHelper by lazy {
 
             val to = target.adapterPosition
 
+            adapter.moveItem(from, to)
             adapter.notifyItemMoved(from, to)
 
             return true

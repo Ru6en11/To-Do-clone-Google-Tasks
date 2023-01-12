@@ -27,6 +27,10 @@ class TasksViewModel : ViewModel(), Subscriber {
         taskRepository.updateTask(task)
     }
 
+    fun onMoveTask(from: Int, to: Int) {
+        taskRepository.moveTask(from, to)
+    }
+
     fun removeTask(task: Task) {
         taskRepository.removeTask(task)
     }

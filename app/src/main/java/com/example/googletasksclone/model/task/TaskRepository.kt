@@ -12,4 +12,6 @@ interface TaskRepository : Repository {
 
     fun add(task: Task)
 
+    fun moveTask(from: Int, to: Int)
+
 }

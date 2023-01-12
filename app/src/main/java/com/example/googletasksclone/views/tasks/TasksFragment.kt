@@ -156,6 +156,10 @@ class TasksFragment : Fragment(), TasksListener  {
         navigator?.launch(CurrentTaskFragment.newInstance(task))
     }
 
+    override fun onMoveTask(from: Int, to: Int) {
+        viewModel.onMoveTask(from, to)
+    }
+
     companion object {
 
         private const val KEY_STATE = "com.example.googletasksclone.views.tasks.key_state"
