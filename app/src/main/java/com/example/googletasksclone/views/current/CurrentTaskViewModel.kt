@@ -28,8 +28,8 @@ class CurrentTaskViewModel : ViewModel() {
             additionalInfo = additionalInfo ?: task.additionalInfo,
             isFavourite = isFavourite ?: task.isFavourite
         )
-            taskRepository.updateTask(newTask)
-            _task.value = newTask
+        taskRepository.updateTask(newTask)
+        _task.value = newTask
     }
 
     fun deleteTask() {
