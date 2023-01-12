@@ -12,6 +12,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -67,6 +68,13 @@ class TasksFragment : Fragment(), TasksListener  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setFragmentResultListener(EVENT_DELETE_TASK) { key, bundle ->
+            @Suppress("DEPRECATION")
+            val task = bundle.getParcelable<Task>(KEY_REMOVED_TASK) as Task
+            Toast.makeText(requireContext(), "${task.text} deleted", Toast.LENGTH_SHORT).show()
+        }
+
 
         newTaskDialog = BottomSheetDialog(requireContext(), R.style.DialogStyle)
         newTaskDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
@@ -162,6 +170,8 @@ class TasksFragment : Fragment(), TasksListener  {
 
     companion object {
 
+        const val EVENT_DELETE_TASK = "com.example.googletasksclone.views.tasks.delete_task"
+        const val KEY_REMOVED_TASK = "com.example.googletasksclone.views.tasks.delete_task"
         private const val KEY_STATE = "com.example.googletasksclone.views.tasks.key_state"
 
         fun newInstance(): TasksFragment = TasksFragment()
