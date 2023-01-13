@@ -37,6 +37,12 @@ class TasksViewModel : ViewModel(), Subscriber {
 
     fun createTask(task: Task) {
         taskRepository.add(task)
+        getTasks()
+    }
+
+    fun getTasks() {
+        val tasks = taskRepository.getTasks()
+        _tasks.value = tasks
     }
 
     override fun setChanges(tasks: List<Task>) {
@@ -48,12 +54,12 @@ class TasksViewModel : ViewModel(), Subscriber {
             _tasks.value = state!!
             return
         }
-        taskRepository.add(Task(isCompleted = true, text = "Task 0", additionalInfo = "addit info", isFavourite = true))
-        for (i in 1..10) {
-            taskRepository.add(
-                Task(isCompleted = false, text = "Task $i", additionalInfo = "" , isFavourite = false)
-            )
-        }
+//        taskRepository.add(Task(isCompleted = true, text = "Task 0", additionalInfo = "addit info", isFavourite = true))
+//        for (i in 1..10) {
+//            taskRepository.add(
+//                Task(isCompleted = false, text = "Task $i", additionalInfo = "" , isFavourite = false)
+//            )
+//        }
     }
 
 
