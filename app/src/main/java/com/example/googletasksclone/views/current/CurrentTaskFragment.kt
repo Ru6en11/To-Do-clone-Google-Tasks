@@ -72,7 +72,7 @@ class CurrentTaskFragment : Fragment() {
         }
 
         binding.deleteImageButton.setOnClickListener {
-            viewModel.deleteTask()
+//            viewModel.deleteTask()
             setFragmentResult(TasksFragment.EVENT_DELETE_TASK, bundleOf(TasksFragment.KEY_REMOVED_TASK to viewModel.task.value))
             navigator?.goBack()
         }
