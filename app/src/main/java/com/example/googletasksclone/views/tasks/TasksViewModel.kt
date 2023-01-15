@@ -10,21 +10,12 @@ import com.example.googletasksclone.model.task.Subscriber
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class TasksViewModel : ViewModel(), Subscriber {
+class TasksViewModel : ViewModel() {
 
     private val taskRepository = InDatabaseTaskRepository.get()
 
     private val _tasks = MutableLiveData<List<Task>>()
     val tasks: LiveData<List<Task>> = taskRepository.getTasks()
-
-    init {
-        taskRepository.addSubscriber(this)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        taskRepository.removeSubscriber(this)
-    }
 
     fun updateTask(task: Task) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -48,30 +39,11 @@ class TasksViewModel : ViewModel(), Subscriber {
         }
     }
 
-    fun getTasks() {
-        val tasks = taskRepository.getTasks()
-        _tasks.value = tasks.value
-    }
-
-    override fun setChanges(tasks: List<Task>) {
-        _tasks.value = tasks
-    }
-
-    fun removeTaskFromLiveData(task: Task) {
-
-    }
-
     fun initState(state: MutableList<Task>? = null) {
         if (state != null) {
             _tasks.value = state!!
             return
         }
-//        taskRepository.add(Task(isCompleted = true, text = "Task 0", additionalInfo = "addit info", isFavourite = true))
-//        for (i in 1..10) {
-//            taskRepository.add(
-//                Task(isCompleted = false, text = "Task $i", additionalInfo = "" , isFavourite = false)
-//            )
-//        }
     }
 
 

@@ -10,7 +10,7 @@ import kotlin.concurrent.thread
 
 private const val DATABASE_NAME = "tasks-database"
 
-class InDatabaseTaskRepository private constructor(context: Context): TaskRepository, Observer {
+class InDatabaseTaskRepository private constructor(context: Context): TaskRepository {
 
     private val database: TaskDatabase = Room.databaseBuilder(
         context.applicationContext,
@@ -19,11 +19,9 @@ class InDatabaseTaskRepository private constructor(context: Context): TaskReposi
     ).build()
 
     private val tasksDao = database.taskDao()
-    private val executor = Executors.newSingleThreadExecutor()
 
     private var tasks: MutableList<Task> =  mutableListOf()
 
-    override val subscribers = mutableListOf<Subscriber>()
 
     override fun getTasks(): LiveData<List<Task>> = tasksDao.getTasks()
 
@@ -40,30 +38,17 @@ class InDatabaseTaskRepository private constructor(context: Context): TaskReposi
     override suspend fun removeTask(task: Task) {
         tasks.remove(task)
         tasksDao.deleteTask(task)
-//        notifySubscribers()
     }
 
     override suspend fun add(task: Task) {
         tasks.add(task)
         tasksDao.addTask(task)
-        //notifySubscribers()
     }
 
     override fun moveTask(from: Int, to: Int) {
         Collections.swap(tasks, from, to)
     }
 
-    override fun addSubscriber(subscriber: Subscriber) {
-        subscribers.add(subscriber)
-    }
-
-    override fun removeSubscriber(subscriber: Subscriber) {
-        subscribers.remove(subscriber)
-    }
-
-    override fun notifySubscribers() {
-        subscribers.forEach { it.setChanges(tasks) }
-    }
 
     companion object {
 
