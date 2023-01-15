@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,7 @@ class TasksFragment : Fragment(), TasksListener  {
     private var navigator: Navigator? = null
     private val adapter: TasksAdapter = TasksAdapter(this)
     private lateinit var newTaskDialog: BottomSheetDialog
+    private var deletingMode = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -63,27 +65,38 @@ class TasksFragment : Fragment(), TasksListener  {
     ): View {
 
         binding = FragmentTasksBinding.inflate(inflater, container, false)
-
         return binding.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setFragmentResultListener(EVENT_DELETE_TASK) { key, bundle ->
+            deletingMode = true
+
             @Suppress("DEPRECATION")
             val task = bundle.getParcelable<Task>(KEY_REMOVED_TASK) as Task
-            val snackbar = Snackbar.make( view, "Задача удалена", Snackbar.LENGTH_LONG)
-            var flagDeleteTask = true
-            snackbar.setAction("Отмена") {
+            val snackbar = Snackbar.make(view, "Задача удалена", Snackbar.LENGTH_LONG)
 
+            val deletingItemPos: Int? = adapter.removeItem(task)
+
+            var flagDeleteTask = true
+
+            snackbar.setAction("Отмена") {
                 flagDeleteTask = false
             }
             snackbar.addCallback(object : BaseCallback<Snackbar>() {
+                override fun onShown(transientBottomBar: Snackbar?) {
+                    super.onShown(transientBottomBar)
+                }
+
                 override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                     super.onDismissed(transientBottomBar, event)
                     if (flagDeleteTask) viewModel.removeTask(task)
+                    else {
+                        adapter.addItem(task, deletingItemPos)
+                    }
+                    deletingMode = false
                 }
             })
             snackbar.show()
@@ -102,7 +115,7 @@ class TasksFragment : Fragment(), TasksListener  {
         }
 
         viewModel.tasks.observe(viewLifecycleOwner) {
-            adapter.tasks = it.toMutableList()
+            if (!deletingMode) adapter.setList(it.toMutableList())
         }
     }
 
