@@ -22,19 +22,25 @@ import com.example.googletasksclone.base.navigator.Navigator
 import com.example.googletasksclone.databinding.CreateTaskBottomSheetBinding
 import com.example.googletasksclone.model.task.Task
 import com.example.googletasksclone.databinding.FragmentTasksBinding
+import com.example.googletasksclone.views.category.CategoryViewPager2Adapter
 import com.example.googletasksclone.views.current.CurrentTaskFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayoutMediator
 
-class TasksFragment : Fragment(), TasksListener  {
+val categories = arrayOf(
+    "Избранные",
+    "Мои задачи"
+)
+
+class TasksFragment : Fragment()  {
 
     private lateinit var binding: FragmentTasksBinding
     private val viewModel: TasksViewModel by activityViewModels()
     private var navigator: Navigator? = null
-    private val adapter: TasksAdapter = TasksAdapter(this)
+    private lateinit var adapter: CategoryViewPager2Adapter
     private lateinit var newTaskDialog: BottomSheetDialog
-    private var deletingMode = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -71,51 +77,21 @@ class TasksFragment : Fragment(), TasksListener  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFragmentResultListener(EVENT_DELETE_TASK) { key, bundle ->
-            deletingMode = true
 
-            @Suppress("DEPRECATION")
-            val task = bundle.getParcelable<Task>(KEY_REMOVED_TASK) as Task
-            val snackbar = Snackbar.make(view, "Задача удалена", Snackbar.LENGTH_LONG)
+        adapter = CategoryViewPager2Adapter(this)
+        binding.categoryViewPager2.adapter = adapter
 
-            val deletingItemPos: Int? = adapter.removeItem(task)
-
-            var flagDeleteTask = true
-
-            snackbar.setAction("Отмена") {
-                flagDeleteTask = false
-            }
-            snackbar.addCallback(object : BaseCallback<Snackbar>() {
-                override fun onShown(transientBottomBar: Snackbar?) {
-                    super.onShown(transientBottomBar)
-                }
-
-                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                    super.onDismissed(transientBottomBar, event)
-                    if (flagDeleteTask) viewModel.removeTask(task)
-                    else {
-                        adapter.addItem(task, deletingItemPos)
-                    }
-                    deletingMode = false
-                }
-            })
-            snackbar.show()
-        }
-
+        TabLayoutMediator(binding.categoryTabLayout, binding.categoryViewPager2) {tab, position ->
+            tab.text = categories[position]
+        }.attach()
 
         newTaskDialog = BottomSheetDialog(requireContext(), R.style.DialogStyle)
         newTaskDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
 
-        initRecyclerView()
         createTaskDialog()
 
         binding.createItemFab.setOnClickListener {
-//            viewModel.createTask()
             newTaskDialog.show()
-        }
-
-        viewModel.tasks.observe(viewLifecycleOwner) {
-            if (!deletingMode) adapter.setList(it.toMutableList())
         }
     }
 
@@ -125,13 +101,6 @@ class TasksFragment : Fragment(), TasksListener  {
             KEY_STATE,
             viewModel.tasks.value as ArrayList<Task>
         )
-    }
-
-    private fun initRecyclerView() {
-        val layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = adapter
-        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
     }
 
     private fun createTaskDialog() {
@@ -181,18 +150,6 @@ class TasksFragment : Fragment(), TasksListener  {
 
         newTaskDialog.setContentView(dialogBinding.root)
 
-    }
-
-    override fun onClickTask(task: Task) {
-        viewModel.updateTask(task)
-    }
-
-    override fun showTaskScreen(task: Task) {
-        navigator?.launch(CurrentTaskFragment.newInstance(task))
-    }
-
-    override fun onMoveTask(from: Int, to: Int) {
-        viewModel.onMoveTask(from, to)
     }
 
     companion object {
