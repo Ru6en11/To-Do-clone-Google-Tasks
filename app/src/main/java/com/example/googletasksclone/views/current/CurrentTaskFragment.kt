@@ -14,6 +14,7 @@ import com.example.googletasksclone.R
 import com.example.googletasksclone.base.navigator.Navigator
 import com.example.googletasksclone.databinding.FragmentCurrentTaskBinding
 import com.example.googletasksclone.model.task.Task
+import com.example.googletasksclone.views.category.CategoryFragment
 import com.example.googletasksclone.views.tasks.TasksFragment
 
 class CurrentTaskFragment : Fragment() {
@@ -73,7 +74,7 @@ class CurrentTaskFragment : Fragment() {
 
         binding.deleteImageButton.setOnClickListener {
 //            viewModel.deleteTask()
-            setFragmentResult(TasksFragment.EVENT_DELETE_TASK, bundleOf(TasksFragment.KEY_REMOVED_TASK to viewModel.task.value))
+            setFragmentResult("111", bundleOf(CategoryFragment.KEY_REMOVED_TASK to viewModel.task.value))
             navigator?.goBack()
         }
 
