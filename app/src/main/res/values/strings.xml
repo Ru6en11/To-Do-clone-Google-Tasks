@@ -13,4 +13,5 @@
     <string name="add_addit_info_hint">Добавьте дополнительную информацию</string>
     <string name="completed">Выполнено</string>
     <string name="uncompleted">Невыполненого</string>
+    <string name="favourite">Избранныые</string>
 </resources>
