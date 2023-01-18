@@ -21,6 +21,7 @@ import com.example.googletasksclone.base.navigator.Navigator
 import com.example.googletasksclone.databinding.CreateTaskBottomSheetBinding
 import com.example.googletasksclone.model.task.Task
 import com.example.googletasksclone.databinding.FragmentTasksBinding
+import com.example.googletasksclone.databinding.PageSwitcherBootomSheetBinding
 import com.example.googletasksclone.views.category.CategoryViewPager2Adapter
 import com.example.googletasksclone.views.category.adapters
 import com.example.googletasksclone.views.current.CurrentTaskFragment
@@ -42,6 +43,7 @@ class TasksFragment : Fragment(), TasksListener  {
     private var navigator: Navigator? = null
     private lateinit var adapter: CategoryViewPager2Adapter
     private lateinit var newTaskDialog: BottomSheetDialog
+    private lateinit var pageSwitcherDialog: BottomSheetDialog
     private var deletingMode = false
 
     override fun onAttach(context: Context) {
@@ -117,8 +119,15 @@ class TasksFragment : Fragment(), TasksListener  {
 
         newTaskDialog = BottomSheetDialog(requireContext(), R.style.DialogStyle)
         newTaskDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-
         createTaskDialog()
+
+        pageSwitcherDialog = BottomSheetDialog(requireContext(), R.style.DialogStyle)
+        pageSwitcherDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        createPageSwitcherDialog()
+
+        binding.bottomAppBar.setNavigationOnClickListener {
+            pageSwitcherDialog.show()
+        }
 
         binding.createItemFab.setOnClickListener {
             newTaskDialog.show()
@@ -172,6 +181,28 @@ class TasksFragment : Fragment(), TasksListener  {
 
         newTaskDialog.setContentView(dialogBinding.root)
 
+    }
+
+    private fun createPageSwitcherDialog() {
+        val dialogBinding = PageSwitcherBootomSheetBinding.inflate(LayoutInflater.from(requireContext()), null, false)
+        pageSwitcherDialog.setContentView(dialogBinding.root)
+
+        dialogBinding.favouriteTasksButton.setOnClickListener {
+            val tab = binding.categoryTabLayout.getTabAt(0)
+            tab?.select()
+            pageSwitcherDialog.dismiss()
+        }
+        dialogBinding.myTasksButton.setOnClickListener {
+            val tab = binding.categoryTabLayout.getTabAt(1)
+            tab?.select()
+            pageSwitcherDialog.dismiss()
+
+        }
+        dialogBinding.completedTasksButton.setOnClickListener {
+            val tab = binding.categoryTabLayout.getTabAt(2)
+            tab?.select()
+            pageSwitcherDialog.dismiss()
+        }
     }
 
     override fun onClickTask(task: Task) {
