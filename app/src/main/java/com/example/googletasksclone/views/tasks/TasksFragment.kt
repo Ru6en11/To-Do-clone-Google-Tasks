@@ -54,18 +54,6 @@ class TasksFragment : Fragment(), TasksListener  {
         navigator = null
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        if (savedInstanceState == null) {
-            viewModel.initState()
-        } else {
-            @Suppress("DEPRECATION")
-            val state = savedInstanceState.getParcelableArrayList<Task>(KEY_STATE) as MutableList<Task>
-            viewModel.initState(state)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -137,14 +125,6 @@ class TasksFragment : Fragment(), TasksListener  {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList(
-            KEY_STATE,
-            viewModel.tasks.value as ArrayList<Task>
-        )
-    }
-
     private fun createTaskDialog() {
 
         val dialogBinding = CreateTaskBottomSheetBinding.inflate(LayoutInflater.from(requireContext()), null, false)
@@ -208,9 +188,9 @@ class TasksFragment : Fragment(), TasksListener  {
 
     override fun observeData(lifecycleOwner: LifecycleOwner, adapter: TasksAdapter, position: Int) {
         when (position) {
-            0 -> viewModel.tasks.observe(lifecycleOwner) { if(!deletingMode) adapter.tasks = it.toMutableList()}
+            0 -> viewModel.favouriteTasks.observe(lifecycleOwner) { if(!deletingMode) adapter.tasks = it.toMutableList()}
             1 -> viewModel.tasks.observe(lifecycleOwner) { if(!deletingMode) adapter.tasks = it.toMutableList()}
-            2 -> viewModel.tasks.observe(lifecycleOwner) { if(!deletingMode) adapter.tasks = it.toMutableList()}
+            2 -> viewModel.completedTasks.observe(lifecycleOwner) { if(!deletingMode) adapter.tasks = it.toMutableList()}
         }
     }
 
@@ -218,7 +198,6 @@ class TasksFragment : Fragment(), TasksListener  {
 
         const val EVENT_ARG_TASK = "event_arg_task"
         const val EVENT_ARG_POSITION = "event_arg_position"
-        private const val KEY_STATE = "com.example.googletasksclone.views.tasks.key_state"
 
         fun newInstance(): TasksFragment = TasksFragment()
 

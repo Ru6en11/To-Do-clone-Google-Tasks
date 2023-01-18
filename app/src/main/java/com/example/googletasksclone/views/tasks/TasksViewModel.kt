@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.googletasksclone.model.task.InDatabaseTaskRepository
 import com.example.googletasksclone.model.task.Task
-import com.example.googletasksclone.model.task.Subscriber
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -16,6 +15,8 @@ class TasksViewModel : ViewModel() {
 
     private val _tasks = MutableLiveData<List<Task>>()
     val tasks: LiveData<List<Task>> = taskRepository.getTasks()
+    val completedTasks: LiveData<List<Task>> = taskRepository.getCompletedTasks()
+    val favouriteTasks: LiveData<List<Task>> = taskRepository.getFavouriteTasks()
 
     fun updateTask(task: Task) {
         viewModelScope.launch(Dispatchers.IO) {
