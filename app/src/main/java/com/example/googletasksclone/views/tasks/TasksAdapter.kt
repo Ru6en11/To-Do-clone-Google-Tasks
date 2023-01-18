@@ -1,6 +1,5 @@
 package com.example.googletasksclone.views.tasks
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +33,7 @@ class TasksDiffCallback(
 
 }
 
-class TasksAdapter(private val listener: TasksListener) : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
+class TasksAdapter(private val listener: TasksListener, private val adapterPos: Int) : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
 
     var tasks: MutableList<Task> = mutableListOf()
             set(newValue) {
@@ -51,7 +50,7 @@ class TasksAdapter(private val listener: TasksListener) : RecyclerView.Adapter<T
         fun bind(task: Task) = binding.run {
 
             root.setOnClickListener {
-                listener.showTaskScreen(task)
+                listener.showTaskScreen(task, adapterPos)
             }
 
             isCompletedCheckBox.isChecked = task.isCompleted
